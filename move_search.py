@@ -5,6 +5,13 @@ Cmate_Score = 100000
 INF=float("inf")
 nodes_searched = 0
 
+def reset_node_count():
+    global nodes_searched
+    nodes_searched = 0
+
+def get_node_count():
+    return nodes_searched
+
 def terminal_score(board, depth):
 
     if board.is_checkmate():
@@ -36,7 +43,7 @@ def m_order(board):
     moves.sort(key=priority, reverse=True)
     return moves
 
-def minmax(board, depth, evaluate):
+def minimax(board, depth, evaluate):
     global  nodes_searched
     nodes_searched += 1
 
@@ -51,14 +58,14 @@ def minmax(board, depth, evaluate):
         best_move = -INF
         for move in moves:
             board.push(move)
-            best_move = max(best_move, minmax(board, depth -1, evaluate))
+            best_move = max(best_move, minimax(board, depth -1, evaluate))
             board.pop()
         return best_move
     else:
         best_move = INF
         for move in moves:
             board.push(move)
-            best_move = min(best_move, minmax(board, depth -1, evaluate))
+            best_move = min(best_move, minimax(board, depth -1, evaluate))
             board.pop()
         return best_move
         
