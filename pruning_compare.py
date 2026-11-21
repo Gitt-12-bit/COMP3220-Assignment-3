@@ -5,27 +5,27 @@ from agents import attacking, defensive
 
 POSITIONS = {
     "Starting position": chess.STARTING_FEN,
+    "Italian Game opening": "r1bqkbnr/pppp1ppp/2n5/4p3/2B1P3/5N2/PPPP1PPP/RNBQK2R b KQkq - 3 3"
 }
 
-def count_nodes(fen, depth, use_pruning):
+EVALUATORS = {"Attacking": attacking.evaluate, "Defensive": defensive.evaluate}
+
+def count_nodes(fen, depth, use_pruning, evaluate):
     board = chess.Board(fen)
     search.reset_node_count()
 
     if use_pruning:
-        attkscore = search.alphabeta_search(board, depth, -search.INF, search.INF, attacking.evaluate)
-        defscore = search.alphabeta_search(board, depth, -search.INF, search.INF, defensive.evaluate)
+        score = search.alphabeta_search(board, depth, -search.INF, search.INF, evaluate)
     else:
-        attkscore = search.minimax(board, depth, attacking.evaluate)
-        defscore = search.minimax(board, depth, defensive.evaluate)
-    return attkscore, defscore, search.get_node_count()
-
+        score = search.minimax(board, depth, evaluate)
+    return score, search.get_node_count()
 
 if __name__ == "__main__":
     depth = int(sys.argv[1]) if len(sys.argv) > 1 else 3
-    name, fen = POSITIONS.items()
-    s1, n1 = count_nodes(fen, depth, use_pruning=False)
-    s2, n2 = count_nodes(fen, depth, use_pruning=True)
-    print(f"{name}  (depth {depth})")
-    print(f" Minimax: {n1:>9,} nodes, score {s1}")
-    print(f" Alpha-Beta: {n2:>9,} nodes, score {s2}")
-    print(f" Same score: {s1 == s2} Nodes saved: {100 * (1 - n2 / n1):.1f}%\n")
+    for posname, fen in POSITIONS.items():
+        for agentname, evaluate in EVALUATORS.items():
+            s1, n1 = count_nodes(fen, depth, False, evaluate)
+            s2, n2 = count_nodes(fen, depth, True, evaluate)
+            print(f"{posname} | {agentname} | depth {depth}")
+            print(f" Minimax: {n1:>9,} nodes, score {s1} | Alpha-Beta: {n2:>9,} nodes"
+                  f"(score {s2}) | Same score: {s1 == s2} | Nodes saved: {100 * (1 - n2 / n1):.1f}%\n")

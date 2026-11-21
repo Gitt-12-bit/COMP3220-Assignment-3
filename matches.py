@@ -1,6 +1,7 @@
 import argparse
 import os
 import chess
+from datetime import datetime
 
 from agents.base_agent import Agent, DIFFICULTY
 from agents import attacking, defensive
@@ -13,14 +14,14 @@ def play_game(white, black, max_plies=MAX_PLIES):
     moves = []
     while not board.is_game_over(claim_draw=True):
         if len(moves) >= max_plies:
-            return "draw", moves, "Move limit reached"
+            return "1/2 - 1/2", moves, "Move limit reached"
         agent = white if board.turn == chess.WHITE else black
         move = agent.get_move(board)
         moves.append(board.san(move))
 
         board.push(move)
     outcome = board.outcome(claim_draw=True)
-    return board.result(claim_draw=True), moves, outcome.termination.name.replace("_", "").title()
+    return board.result(claim_draw=True), moves, outcome.termination.name.replace("_", " ").title()
 
 def format_moves(moves):
     parts = []
@@ -30,7 +31,11 @@ def format_moves(moves):
     return " ".join(parts)
 
 def run_match(agent1, agent2, games = 8, log_dir="match_logs"):
+    timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S-%f")
+
+    log_dir = os.path.join(log_dir, f"match_{timestamp}")
     os.makedirs(log_dir, exist_ok=True)
+
     tally = {agent1.name: 0, agent2.name: 0, "Draws": 0}
     summary = []
 
@@ -64,7 +69,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--games", type=int, default=8)
     parser.add_argument("--level", default="Medium",  choices = list(DIFFICULTY))
-    parser.add_argument("--opponent", default="defensive", choices=["defensve", "random"])
+    parser.add_argument("--opponent", default="defensive", choices=["defensive", "random"])
     args = parser.parse_args()
 
     attk = Agent("Attacking", attacking.evaluate, args.level)

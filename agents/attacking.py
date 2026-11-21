@@ -1,12 +1,19 @@
+'''
+The strategy involves Always attacking and never really defending. This specific agent
+scores positions by how much pressure it puts on the enemy kind, how active and advanced
+its pieces are, and how quickly it develops. It doesn't have a king-safety mechanism so
+it will trade it's own safety to complete it's task.
+
+Every function returns a number from WHITE point of view.
+'''
+
 import chess
 
 PIECE_VALUES = {chess.PAWN: 100, chess.KNIGHT: 320, chess.BISHOP: 330,
                 chess.ROOK: 500, chess.QUEEN: 900, chess.KING: 0}
 
-ATTACKING_WEIGHT = {chess.PAWN: 1, chess.KINGHT: 2, chess.BISHOP: 2,
+ATTACKING_WEIGHT = {chess.PAWN: 1, chess.KNIGHT: 2, chess.BISHOP: 2,
                     chess.ROOK: 3, chess.QUEEN: 5, chess.KING: 0}
-
-board = chess.Board
 
 K_pressure_weight = 12
 Check_weight = 40
@@ -37,12 +44,12 @@ def check_bonus(board):
         return Check_weight if board.turn == chess.BLACK else -Check_weight
     return 0
 
-def mobility(board, colour):
+def mobility(board, color):
     own_pieces = board.occupied_co[color]
     total = 0
     for piece_type in (chess.KNIGHT, chess.BISHOP, chess.ROOK, chess.QUEEN):
         for square in board.pieces(piece_type, color):
-            reachable = board.attacks_mask(square) & -own_pieces
+            reachable = board.attacks_mask(square) & ~own_pieces
             total += chess.popcount(reachable)
     return total
 
@@ -51,7 +58,7 @@ def advancement(board, color):
     for piece_type in (chess.PAWN, chess.KNIGHT, chess.BISHOP, chess.ROOK, chess.QUEEN):
         for square in board.pieces(piece_type, color):
             rank = chess.square_rank(square)
-            total += rank if color == chess.WHITE else - - rank
+            total += rank if color == chess.WHITE else 7 - rank
     return total
 
 def development(board, color):

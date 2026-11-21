@@ -21,6 +21,9 @@ def terminal_score(board, depth):
 
     if board.is_stalemate() or board.is_insufficient_material():
         return 0
+
+    if board.is_repetition(2):
+        return 0
     return None
 
 def m_order(board):
