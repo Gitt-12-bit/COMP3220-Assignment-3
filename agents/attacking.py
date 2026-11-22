@@ -1,3 +1,4 @@
+#ID NUMBERS: 620171757, 620160983
 '''
 The strategy involves Always attacking and never really defending. This specific agent
 scores positions by how much pressure it puts on the enemy kind, how active and advanced

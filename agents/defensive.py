@@ -1,8 +1,8 @@
+#ID NUMBERS: 620171757, 620160983
 import chess
 
 board = chess.Board()
 print(board)
-
 
 def Material(board):
     # Lookup table containing the value of each chess piece

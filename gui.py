@@ -1,3 +1,4 @@
+#ID NUMBERS: 620171757, 620160983
 import tkinter as tk
 import threading #Lets AI think in the background to prevent the window freezing
 import traceback #Prints error if the AI crashes instead of hanging silently
