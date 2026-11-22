@@ -10,6 +10,8 @@ POSITIONS = {
 
 EVALUATORS = {"Attacking": attacking.evaluate, "Defensive": defensive.evaluate}
 
+#Searches one position with one evaluation function with ot without pruning and returns(score, number of nodes visited)
+#The node counter is reset before each search so the counts never mix.
 def count_nodes(fen, depth, use_pruning, evaluate):
     board = chess.Board(fen)
     search.reset_node_count()

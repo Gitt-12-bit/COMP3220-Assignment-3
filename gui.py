@@ -5,23 +5,32 @@ import chess
 from agents.base_agent import Agent, DIFFICULTY #Also imports the difficulty to use in the menus
 from agents import attacking, defensive 
 
-SQUARE = 70   # size of one square in pixels
+SQUARE = 70   #starting size of one square in pixels. (Grows and shrinks with window)
+BASE_SQUARE = 70    #Size the font and hint sizes were initially designed for
+X_OFF = 0   #Left margin that centres the board in the canvas
+Y_OFF = 0   #Top margin that centres the board in the canvas
 
 root = tk.Tk()
 root.title("ChessBoard")
-LEVELS = list(DIFFICULTY.keys())    #Gets difficulties (East, Medium, Hard, Expert)
-level_var = tk.StringVar(value="Medium")    #Difficulty for human vs AI
+root.minsize(560, 360)
+LEVELS = list(DIFFICULTY.keys())                    #Gets difficulties (East, Medium, Hard, Expert)
+level_var = tk.StringVar(value="Medium")            #Difficulty for human vs AI
 attacking_level_var = tk.StringVar(value="Medium")  #Default difficulty of attacking agent in AI vs AI
 defending_level_var = tk.StringVar(value="Medium")  #Default difficulty of defending agent in AI vs AI
 attacking_colour_var = tk.StringVar(value="Black")  #Colour attacking agent plays in AI vs AI
-white_agent = Agent("Defensive", defensive.evaluate, 2)   # CHANGED: depth=2 -> 2 (matches new Agent)
-black_agent = Agent("Attack", attacking.evaluate, 2)      #Attacking agent
-canvas = tk.Canvas(root, width=8 * SQUARE, height=8 * SQUARE)
-canvas.pack()
+white_agent = Agent("Defensive", defensive.evaluate, 2)   #Initial position for Defensive agent
+black_agent = Agent("Attack", attacking.evaluate, 2)      #Initial position for Attacking agent
+game_frame = tk.Frame(root)                         #show/hide the whole game screen
+side_bar = tk.Frame(game_frame, width=220)          #Holds status and buttoms
+side_bar.pack(side="right", fill="y", padx=10, pady=10)
+side_bar.pack_propagate(False)
+
+canvas = tk.Canvas(game_frame, width=8 * SQUARE, height=8 * SQUARE, highlightthickness=0)
+canvas.pack(side="left", fill="both", expand=True)  #Les the board area grow
 
 #label under the board that shows whose turn it is / the result
-status = tk.Label(root, text="", font=("Arial", 14))
-status.pack()
+status = tk.Label(side_bar, text="", font=("Arial", 14), wraplength=200, justify="left")
+status.pack(anchor="w", pady=(0,10))
 
 #Draws out the structure the board for the game
 def draw_board():
@@ -32,8 +41,8 @@ def draw_board():
                 color = "#f0d9b5"
             else:
                 color = "#b58863"
-            x1 = col * SQUARE
-            y1 = row * SQUARE
+            x1 = X_OFF + col * SQUARE
+            y1 = Y_OFF + row * SQUARE
             x2 = x1 + SQUARE
             y2 = y1 + SQUARE
             canvas.create_rectangle(x1, y1, x2, y2, fill=color, outline="")
@@ -60,14 +69,14 @@ step_requested = False  #Set the step button while paused
 def square_box(square):
     col = chess.square_file(square)
     row = 7 - chess.square_rank(square)
-    return col * SQUARE, row * SQUARE, (col + 1) * SQUARE, (row + 1) * SQUARE
+    return (X_OFF + col * SQUARE, Y_OFF + row * SQUARE, X_OFF + (col + 1) * SQUARE, Y_OFF + (row + 1) * SQUARE)
 
 #Colours last move, selected piece, and king in check
 def draw_highlights():
     colours = {}
     if last_move is not None:
         colours[last_move.from_square] = "#cdd26a"
-        colours[last_move.from_square] = "#cdd26a"
+        colours[last_move.to_square] = "#cdd26a"
     if board.is_check():
         colours[board.king(board.turn)] = "#e57373"
     if selected is not None:
@@ -85,10 +94,12 @@ def move_hints():
             continue
         x1, y1, x2, y2 = square_box(move.to_square)
         cx,  cy = (x1 + x2) // 2, (y1 + y2) // 2
+        ring = SQUARE * 30 // BASE_SQUARE
+        dot = max(3, SQUARE * 9 // BASE_SQUARE)
         if board.piece_at(move.to_square):
-            canvas.create_oval(cx - 30, cy - 30, cx + 30, cy - 30, outline="#444444", width=4, tags="highlight")
+            canvas.create_oval(cx - ring, cy - ring, cx + ring, cy + ring, outline="#444444", width=4, tags="highlight")
         else:
-            canvas.create_oval(cx - 9, cy - 9, cx + 9, cy - 9, fill="#555555", outline="", width=4, tags="highlight")
+            canvas.create_oval(cx - dot, cy - dot, cx + dot, cy + dot, fill="#555555", outline="", width=4, tags="highlight")
 
 #Draws out the chess pieces
 def draw_pieces():
@@ -99,10 +110,10 @@ def draw_pieces():
         col = chess.square_file(square)
         row = 7 - chess.square_rank(square)
 
-        x = col * SQUARE + SQUARE // 2
-        y = row * SQUARE + SQUARE // 2
+        x = X_OFF + col * SQUARE + SQUARE // 2
+        y = Y_OFF + row * SQUARE + SQUARE // 2
         symbol = SYMBOLS[(piece.piece_type, piece.color)]
-        canvas.create_text(x, y, text=symbol, font=("Arial", 40), tags="piece")
+        canvas.create_text(x, y, text=symbol, font=("Arial", max(8, 40 * SQUARE // BASE_SQUARE)), tags="piece")
     move_hints()    #drawn AFTER the pieces so the capture rings are visible
 
 #shows whose turn it is, or the result when the game ends
@@ -119,8 +130,10 @@ def update_status():
 
 
 def click_to_square(event):
-    col = event.x // SQUARE
-    row = event.y // SQUARE
+    col = (event.x - X_OFF) // SQUARE
+    row = (event.y - Y_OFF) // SQUARE
+    if not (0 <= col < 8 and 0 <= row < 8):
+        return None
     rank =  7 - row
     return chess.square(col, rank)
 
@@ -169,7 +182,7 @@ def finish_reply(move):
 
 def on_click(event):
     """First click selects a piece, second click tries to move it."""
-    global selected
+    global selected, last_move
     if mode != "human":      #clicks only work in human mode
         return
 
@@ -177,6 +190,8 @@ def on_click(event):
     if thinking or board.turn != chess.WHITE or board.is_game_over(claim_draw=True):
         return
     square = click_to_square(event)
+    if square is None:
+        return
 
     if selected is None:
         piece = board.piece_at(square)
@@ -287,8 +302,7 @@ def start_game(new_mode, opponent=None, white=None):
         white_agent = white             #in AI vs AI bth agents are chosen in menu
 
     menu_frame.pack_forget()
-    canvas.pack()
-    status.pack()
+    game_frame.pack(fill="both", expand=True)
 
     #Show buttons that fit the mode
     for button in (undo_button, pause_button, step_button):
@@ -300,8 +314,8 @@ def start_game(new_mode, opponent=None, white=None):
         pause_button.pack(side="left", padx=4)
         step_button.pack(side="left", padx=4)
 
-    control_frame.pack()
-    back_button.pack()
+    root.update_idletasks()
+    fit_board()
     canvas.delete("all")
     draw_board()
     draw_pieces()
@@ -311,19 +325,16 @@ def start_game(new_mode, opponent=None, white=None):
 
 #Displays menu
 def show_menu():
-    global game_id
+    global game_id, thinking
     game_id += 1                      # stop any running agent loop
     thinking = False
-    canvas.pack_forget()
-    status.pack_forget()
-    control_frame.pack_forget()
-    back_button.pack_forget()
+    game_frame.pack_forget()
     main_menu()
 
 #Shows main menu
 def main_menu():
     clear_menu()
-    menu_frame.pack(padx=40, pady=40)
+    menu_frame.pack(expand=True, padx=40, pady=40)
     tk.Label(menu_frame, text="Chess Agents", font=("Arial", 22)).pack(pady=10)
     tk.Button(menu_frame, text="Human vs AI", width=20, font=("Arial", 14),
               command=opponent_menu).pack(pady=6)
@@ -370,22 +381,55 @@ def start_aiai():
     else:
         start_game("aiai", opponent=attack, white=defend)
 
-back_button = tk.Button(root, text="Menu", command=show_menu)
+
 
 #frame holding mode-specific buttons (Undo, Pause, Step)
-control_frame = tk.Frame(root)
+control_frame = tk.Frame(side_bar)
+control_frame.pack(anchor="w", pady=5)
 undo_button = tk.Button(control_frame, text="Undo", command=undo_move)
 pause_button = tk.Button(control_frame, text="Pause", command=toggle_pause)
 step_button = tk.Button(control_frame, text="Step", command=step_once)
+back_button = tk.Button(side_bar, text="Menu", command=show_menu)
+back_button.pack(anchor="w", pady=5)
+
+#Work out the biggest board that fits the canvas and centre it
+def fit_board():
+    global SQUARE, X_OFF, Y_OFF
+    width, height = canvas.winfo_width(), canvas.winfo_height()
+    SQUARE = max(30, min(width, height) // 8)
+    X_OFF = (width - 8 * SQUARE) // 2
+    Y_OFF = (height -8 * SQUARE) // 2
+
+#Redraw the board and pieces at the current size
+def redraw():
+    canvas.delete("all")
+    draw_board()
+    draw_pieces()
+
+resize_job = None
+
+#Runs whenever the canvas changes size (dragging the edge, Maximize, Restore)
+def on_resize(event):
+    global resize_job
+    if resize_job is not None:
+        root.after_cancel(resize_job)
+    resize_job = root.after(30, apply_resize)
+
+#Applies the resize of page
+def apply_resize():
+    global resize_job
+    resize_job = None
+    fit_board()
+    redraw()
 
 canvas.bind("<Button-1>", on_click)
+canvas.bind("<Configure>", on_resize)
 
 #Start up lines inside run() function, so importing this file doesn't start the program.
 #Main.py can call gui.run(agents)
 def run(agents=None):
     # start on the menu instead of going straight into a game
-    canvas.pack_forget()
-    status.pack_forget()
+    game_frame.pack_forget()
     main_menu()
     root.mainloop()
 

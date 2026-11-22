@@ -1,3 +1,5 @@
+#Sanity checks for attacking evaluation. Expected: starting position scores 0, and a position and its colour-mirrored copy
+#score the same size with opposite signs (for example 61 and -61)
 import chess
 from agents import attacking
 

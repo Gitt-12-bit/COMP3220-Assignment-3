@@ -1,6 +1,7 @@
 import random
 import chess
 
+#The basic reference agent that plays random moves; it is to test against the real agents
 class RefAgent:
     def __init__(self):
         #Initializes Reference agent

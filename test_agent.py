@@ -1,3 +1,4 @@
+#Check that an Agent can be built and choose a legal opening move
 import chess
 from agents.base_agent import Agent
 from agents.defensive import evaluate
