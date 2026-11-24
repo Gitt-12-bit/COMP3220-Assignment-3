@@ -1,0 +1,3 @@
+Game 1: White=Attacking Black=Defensive Result=1-0 (Checkmate, 101 plies)
+
+1. e3 c5 2. b4 cxb4 3. Qh5 Qc7 4. Qf5 Qc6 5. Bb2 d6 6. Qb5 a6 7. Qxc6+ bxc6 8. a3 bxa3 9. Nxa3 Bg4 10. Be2 h5 11. Bd4 Rh6 12. Nc4 d5 13. Nb6 Bxe2 14. Nxa8 Bg4 15. Nf3 Bxf3 16. gxf3 h4 17. Ba7 Nd7 18. Rxa6 Kd8 19. Bb6+ Nxb6 20. Nxb6 Kc7 21. Na8+ Kb7 22. Ra4 c5 23. Ke2 Rf6 24. Rb1+ Kc8 25. Nb6+ Rxb6 26. Rxb6 Kc7 27. Rba6 h3 28. Ra8 Nh6 29. Rxf8 g5 30. Ra7+ Kb6 31. Rxe7 g4 32. Rb8+ Kc6 33. fxg4 Nxg4 34. Rxf7 Nxh2 35. Re7 Kd6 36. Ree8 Kc7 37. Red8 Kc6 38. d4 cxd4 39. exd4 Ng4 40. Ra8 h2 41. Rac8+ Kb6 42. Rb8+ Kc7 43. Rdc8+ Kd7 44. Rh8 h1=Q 45. Rxh1 Kc7 46. Rhh8 Kd6 47. f3 Kc7 48. fxg4 Kd7 49. Rb7+ Kc6 50. Rhh7 Kd6 51. Rb6#

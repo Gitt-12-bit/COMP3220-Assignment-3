@@ -1,0 +1,3 @@
+Game 2: White=Defensive Black=Attacking Result=0-1 (Checkmate, 50 plies)
+
+1. h3 e5 2. Rh2 Qh4 3. g3 Qd4 4. c4 Bb4 5. Qa4 Be7 6. Rg2 b5 7. Qxb5 Nh6 8. Qa4 O-O 9. Qc2 e4 10. h4 f5 11. Kd1 Nc6 12. Ke1 Ba6 13. Qa4 Bxh4 14. gxh4 g5 15. Rxg5+ Kh8 16. Qxa6 Ng4 17. Rh5 Qxf2+ 18. Kd1 Qxf1+ 19. Kc2 Qxg1 20. Rxf5 Rxf5 21. d3 Nd4+ 22. Kc3 Qxc1+ 23. Kxd4 exd3 24. Kxd3 Nf2+ 25. Kd4 c5#

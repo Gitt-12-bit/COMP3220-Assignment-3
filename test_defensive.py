@@ -5,4 +5,5 @@ from move_search import choose_move
 from agents.defensive import evaluate
 
 board = chess.Board()
-print(choose_move(board, 3, evaluate))
+move = choose_move(board, 3, evaluate)
+print("test defensive:", "PASS" if move in board.legal_moves else "FAIL", "- choose", move)

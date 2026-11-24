@@ -2,8 +2,10 @@
 #Check that an Agent can be built and choose a legal opening move
 import chess
 from agents.base_agent import Agent
-from agents.defensive import evaluate
+from agents import attacking, defensive
 
-agent = Agent("Defensive", evaluate, depth=3)
-board = chess.Board()
-print(agent.name, agent.choose_move(board))
+for name, evaluate in (("Attacking", attacking.evaluate), ("Defensive", defensive.evaluate)):
+    agent = Agent(name, evaluate, 3)
+    board = chess.Board()
+    move = agent.choose_move(board)
+    print("test agent:", "PASS" if move in board.legal_moves else "FAIL", "-", agent.name, "choose", move)

@@ -1,0 +1,3 @@
+Game 4: White=Defensive Black=Attacking Result=1-0 (Checkmate, 75 plies)
+
+1. b3 d6 2. Nf3 Bg4 3. Ng5 Nc6 4. Nxf7 Kxf7 5. Bb2 e5 6. f3 Qh4+ 7. g3 Qf6 8. fxg4 Qd8 9. Bh3 Qf6 10. g5 Qxg5 11. O-O+ Nf6 12. Bxe5 Qxe5 13. c3 Qc5+ 14. d4 Nxd4 15. cxd4 Qd5 16. Kf2 Qe4 17. Ke1 Qe3 18. Qc2 Ke8 19. Qxc7 Qxd4 20. Rxf6 Qg1+ 21. Rf1 Qxf1+ 22. Kxf1 Be7 23. Qxb7 Rf8+ 24. Kg1 Rf6 25. Qxa8+ Kf7 26. Qd5+ Ke8 27. Qg8+ Bf8 28. Qxh7 Rf7 29. Qe4+ Kd8 30. Qc6 d5 31. Qc8+ Ke7 32. Qd7+ Kf6 33. Qc7 Bd6 34. Qxd6+ Kg5 35. Qxd5+ Kh6 36. Qxf7 g5 37. Bf5 a5 38. Qh7#

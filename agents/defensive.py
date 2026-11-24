@@ -1,9 +1,6 @@
 #ID NUMBERS: 620171757, 620160983
 import chess
 
-board = chess.Board()
-print(board)
-
 def Material(board):
     # Lookup table containing the value of each chess piece
     
@@ -45,11 +42,6 @@ def pawn_shield(board, color):
                 count += 1
 
     return count
-
-    
-    
-    board = chess.Board()
-
 
 
 def king_tucked(board, color):

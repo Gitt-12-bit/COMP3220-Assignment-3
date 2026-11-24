@@ -10,7 +10,7 @@ Every function returns a number from WHITE point of view.
 
 import chess
 
-PIECE_VALUES = {chess.PAWN: 100, chess.KNIGHT: 320, chess.BISHOP: 330,
+PIECE_VALUES = {chess.PAWN: 100, chess.KNIGHT: 300, chess.BISHOP: 300,
                 chess.ROOK: 500, chess.QUEEN: 900, chess.KING: 0}
 
 ATTACKING_WEIGHT = {chess.PAWN: 1, chess.KNIGHT: 2, chess.BISHOP: 2,

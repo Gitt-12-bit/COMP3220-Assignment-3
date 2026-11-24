@@ -1,0 +1,3 @@
+Game 5: White=Attacking Black=Defensive Result=1-0 (Checkmate, 31 plies)
+
+1. e4 Nc6 2. Qh5 a6 3. Bc4 g6 4. Qc5 Bh6 5. f4 Bxf4 6. Nc3 Bxd2+ 7. Bxd2 Nd4 8. Qxd4 e5 9. Qxe5+ Ne7 10. Qxh8+ Ng8 11. Qxg8+ Ke7 12. Nd5+ Kd6 13. Qxd8 Kc5 14. Qxc7+ Kd4 15. Bd3 b5 16. Qc3#

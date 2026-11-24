@@ -1,0 +1,3 @@
+Game 8: White=Defensive Black=Attacking Result=1-0 (Checkmate, 67 plies)
+
+1. c3 Nc6 2. Qa4 b5 3. Qxb5 Na5 4. Qxa5 Bb7 5. Qf5 Nh6 6. Qh3 Be4 7. f4 Bxb1 8. Rxb1 d6 9. Kd1 Ng8 10. b3 Nf6 11. Kc2 Qb8 12. d3 Ng4 13. Qxg4 Qb5 14. Qh4 g5 15. fxg5 Bg7 16. g6 O-O-O 17. Qh3+ Kb8 18. gxh7 a5 19. Qf3 Rxh7 20. Be3 Kc8 21. Qa8+ Kd7 22. Qe4 Bxc3 23. Qxh7 a4 24. Kxc3 Qe5+ 25. Kc2 Qxe3 26. Qxf7 Qc5+ 27. Kd1 Kc8 28. Qe6+ Kb8 29. bxa4+ Ka8 30. Qe4+ c6 31. Qxe7 Rd7 32. Qxd7 Qc1+ 33. Kxc1 c5 34. Qb7#

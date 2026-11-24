@@ -1,0 +1,3 @@
+Game 4: White=Defensive Black=Attacking Result=0-1 (Checkmate, 8 plies)
+
+1. f4 Nh6 2. Nf3 e5 3. h4 Qxh4+ 4. g3 Qxg3#
